@@ -17,7 +17,8 @@ $ npm install ltcdr
 
 program
   .command('initialize [env]')
-  .aliases(['init', 'i'])
+  .alias('init')
+  .alias('i')
   .description('initializes a deploy config for the given environment')
   .option('-b, --branch [name]', 'Which branch to use')
   .action(function(env, options) {
