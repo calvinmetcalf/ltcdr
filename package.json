@@ -15,13 +15,11 @@
     "url": "https://github.com/calvinmetcalf/ltcdr.git"
   },
   "devDependencies": {
-    "tape": "^2.10.2"
+    "tape": "^2.10.2",
+    "tap-spec": "^0.1.5"
   },
   "scripts": {
-    "test": "make test"
-  },
-  "scripts": {
-    "test": "tape test/test.*.js"
+    "test": "tape test/test.*.js | tspec"
   },
   "main": "index",
   "engines": {
