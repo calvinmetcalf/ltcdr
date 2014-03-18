@@ -1,10 +1,39 @@
 # Lieutenant Commander
 
-  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a fork of [commander](https://github.com/visionmedia/commander-js).
+  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a fork of [commander](https://github.com/visionmedia/commander.js).
+
 
 ## Installation
 
-    $ npm install ltcdr
+```
+$ npm install ltcdr
+```
+
+
+## Commands & Actions
+
+```js
+#!/usr/bin/env node
+
+program
+  .command('initialize [env]')
+  .aliases(['init', 'i'])
+  .description('initializes a deploy config for the given environment')
+  .option('-b, --branch [name]', 'Which branch to use')
+  .action(function(env, options) {
+    var branch = options.branch || 'master';
+    env = env || 'prod';
+    console.log('initialized %s environment for %s branch', env, branch);
+  })
+  .parse(process.argv);
+
+// deployer initialize alpha
+// deployer init beta
+// deployer i prod
+```
+
+Aliases are optional, and can take a string or an array, e.g. `.aliases('s')` or `.aliases(['s', 'sup'])`.
+
 
 ## Option parsing
 
