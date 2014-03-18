@@ -1,6 +1,6 @@
 # Lieutenant Commander
 
-  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a for commander [commander](https://github.com/visionmedia/commander-js).
+  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a fork of [commander](https://github.com/visionmedia/commander-js).
 
 ## Installation
 
