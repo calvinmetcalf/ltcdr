@@ -12,17 +12,18 @@ program
   .option('-c, --config <path>', 'set config path. defaults to ./deploy.conf')
   .option('-T, --no-tests', 'ignore test hook')
 
-var envValue = "";
-var cmdValue = "";
+var envValue = '';
+var cmdValue = '';
+var nameValue = '';
 var customHelp = false;
 
 program
   .command('setup [env]')
   .description('run setup commands for all envs')
-  .option("-s, --setup_mode [mode]", "Which setup mode to use")
-  .option("-o, --host [host]", "Host to use")
+  .option('-s, --setup_mode [mode]', 'Which setup mode to use')
+  .option('-o, --host [host]', 'Host to use')
   .action(function(env, options){
-    var mode = options.setup_mode || "normal";
+    var mode = options.setup_mode || 'normal';
     env = env || 'all';
     
     envValue = env;
@@ -30,19 +31,28 @@ program
 
 program
   .command('exec <cmd>')
+  .aliases('run')
   .description('execute the given remote cmd')
-  .option("-e, --exec_mode <mode>", "Which exec mode to use")
-  .option("-t, --target [target]", "Target to use")
+  .option('-e, --exec_mode <mode>', 'Which exec mode to use')
+  .option('-t, --target [target]', 'Target to use')
   .action(function(cmd, options){
     cmdValue = cmd;
-  }).on("--help", function(){
+  }).on('--help', function(){
     customHelp = true;
+  });
+
+program
+  .command('initialize <name>')
+  .aliases(['init', 'i'])
+  .description('Initialises the config')
+  .action(function (name) {
+    nameValue = name;
   });
 
 program
   .command('*')
   .action(function(env){
-    console.log('deploying "%s"', env);
+    console.log('deploying \'%s\'', env);
   });
   
 
@@ -111,6 +121,39 @@ test('test 7', function (t) {
   t.equals(program.commands[1].exec_mode, 'mode2');
   t.equals(program.commands[1].target, 'target1');
   t.equals(cmdValue, 'exec3');
+  t.end();
+});
+
+test('has aliases', function (t) {
+  program.parse(['node', 'test', '--config', 'conf7', 'exec', '--target', 'target7', '-e', 'mode7', 'exec7']);
+  t.equals(program.config, 'conf7');
+  t.equals(program.commands[1]._aliases[0], 'run');
+  t.equals(program.commands[1].exec_mode, 'mode7');
+  t.equals(program.commands[1].target, 'target7');
+  t.equals(cmdValue, 'exec7');
+  t.end();
+});
+
+test('multiple aliases', function (t) {
+  program.parse(['node', 'test', 'initialize', 'config8']);
+
+  var command = program.commands[2],
+    expectedAliases = ['init', 'i'];
+
+  t.equals(command._name, 'initialize');
+  t.same(command._aliases, expectedAliases);
+  t.equals(nameValue, 'config8');
+  t.end();
+});
+
+test('running an alias', function (t) {
+  program.parse(['node', 'test', 'init', 'config9']);
+
+  var command = program.commands[2];
+
+  t.equals(command._aliases.length, 2);
+  t.equals(command._name, 'initialize'); 
+  t.equals(nameValue, 'config9');
   t.end();
 });
 
