@@ -28,7 +28,7 @@ program
   });
 
 program
-  .command('exec <cmd>')
+  .command('exec|run <cmd>')
   .description('execute the given remote cmd')
   .option("-e, --exec_mode <mode>", "Which exec mode to use")
   .option("-t, --target [target]", "Target to use")
@@ -48,8 +48,8 @@ program.parse(['node', 'test', '--config', 'conf']);
 program.config.should.equal("conf");
 program.commands[0].should.not.have.property.setup_mode;
 program.commands[1].should.not.have.property.exec_mode;
-envValue.should.be.null;
-cmdValue.should.be.null;
+envValue.should.equal("");
+cmdValue.should.equal("");
 
 program.parse(['node', 'test', '--config', 'conf1', 'setup', '--setup_mode', 'mode3', 'env1']);
 program.config.should.equal("conf1");
@@ -84,6 +84,13 @@ program.config.should.equal("conf6");
 program.commands[1].exec_mode.should.equal("mode2");
 program.commands[1].target.should.equal("target1");
 cmdValue.should.equal("exec3");
+
+// test alias
+program.parse(['node', 'test', '--config', 'conf7', 'run', '--target', 'target7', '-e', 'mode7', 'exec7']);
+program.config.should.equal("conf7");
+program.commands[1].exec_mode.should.equal("mode7");
+program.commands[1].target.should.equal("target7");
+cmdValue.should.equal("exec7");
 
 // Make sure we still catch errors with required values for options
 var exceptionOccurred = false;

@@ -213,9 +213,11 @@ Command.prototype.parseExpectedArgs = function(args){
 
 Command.prototype.action = function(fn){
   var self = this;
-  this.parent.on(this._name, function(args, unknown){    
+    
+  function actionHandler(args, unknown){
     // Parse any so-far unknown options
     unknown = unknown || [];
+
     var parsed = self.parseOptions(unknown);
     
     // Output help if necessary
@@ -247,7 +249,13 @@ Command.prototype.action = function(fn){
     }
     
     fn.apply(this, args);
+  }
+
+  //aliases are split by "|" so we add a different listener for each
+  this._name.split('|').forEach(function(name){
+    self.parent.on(name, actionHandler);
   });
+
   return this;
 };
 
