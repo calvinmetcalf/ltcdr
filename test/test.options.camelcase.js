@@ -2,8 +2,9 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 function parseRange(str) {
   return str.split('..').map(Number);
@@ -19,9 +20,12 @@ program
   .option('-r, --my-long-range <a..b>', 'pass a range', parseRange);
 
 program.parse('node test -i 5.5 -f 5.5 -m 6.5 -u 7.5 -n 15.99 -r 1..5'.split(' '));
-program.myInt.should.equal(5);
-program.myNum.should.equal(15.99);
-program.myFLOAT.should.equal(5.5);
-program.myVeryLongFloat.should.equal(6.5);
-program.myURLCount.should.equal(7.5);
-program.myLongRange.should.eql([1,5]);
+test('options camelcase', function (t) {
+  t.equals(program.myInt, 5);
+  t.equals(program.myNum, 15.99);
+  t.equals(program.myFLOAT, 5.5);
+  t.equals(program.myVeryLongFloat, 6.5);
+  t.equals(program.myURLCount, 7.5);
+  t.deepEquals(program.myLongRange, [1,5]);
+  t.end();
+});

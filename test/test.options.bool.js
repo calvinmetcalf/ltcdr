@@ -3,8 +3,8 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
@@ -12,5 +12,8 @@ program
   .option('-c, --no-cheese', 'remove cheese');
 
 program.parse(['node', 'test', '--pepper']);
-program.pepper.should.be.true;
-program.cheese.should.be.true;
+test('options camelcase', function (t) {
+  t.ok(program.pepper);
+  t.ok(program.cheese);
+  t.end();
+});

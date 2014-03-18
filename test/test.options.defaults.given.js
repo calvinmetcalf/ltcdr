@@ -2,8 +2,9 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
@@ -15,9 +16,12 @@ program
   .option('-c, --cheese [type]', 'optionally specify the type of cheese', 'mozzarella');
 
 program.parse(['node', 'test', '--anchovies', '--onions', '--olives', '--no-sauce', '--crust', 'thin', '--cheese', 'wensleydale']);
-program.should.have.property('anchovies', true);
-program.should.have.property('onions', true);
-program.should.have.property('olives', 'black');
-program.should.have.property('sauce', false);
-program.should.have.property('crust', 'thin');
-program.should.have.property('cheese', 'wensleydale');
+test('options defaults given', function (t) {
+  t.equals(program.anchovies, true);
+  t.equals(program.onions, true);
+  t.equals(program.olives, 'black');
+  t.equals(program.sauce, false);
+  t.equals(program.crust, 'thin');
+  t.equals(program.cheese, 'wensleydale');
+  t.end();
+});
