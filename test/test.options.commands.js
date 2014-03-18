@@ -29,7 +29,7 @@ program
   });
 
 program
-  .command('exec <cmd>')
+  .command('exec|run <cmd>')
   .description('execute the given remote cmd')
   .option("-e, --exec_mode <mode>", "Which exec mode to use")
   .option("-t, --target [target]", "Target to use")
@@ -111,6 +111,15 @@ test('test 7', function (t) {
   t.equals(program.commands[1].exec_mode, 'mode2');
   t.equals(program.commands[1].target, 'target1');
   t.equals(cmdValue, 'exec3');
+  t.end();
+});
+
+test('aliases', function (t) {
+  program.parse(['node', 'test', '--config', 'conf7', 'run', '--target', 'target7', '-e', 'mode7', 'exec7']);
+  t.equals(program.config, "conf7");
+  t.equals(program.commands[1].exec_mode, "mode7");
+  t.equals(program.commands[1].target, "target7");
+  t.equals(cmdValue, "exec7");
   t.end();
 });
 

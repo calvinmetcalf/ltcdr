@@ -1,6 +1,6 @@
 # Lieutenant Commander
 
-  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a fork of [commander](https://github.com/visionmedia/commander-js).
+  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a for commander [commander](https://github.com/visionmedia/commander.js).
 
 ## Installation
 
@@ -35,6 +35,42 @@ console.log('  - %s cheese', program.cheese);
 ```
 
  Short flags may be passed as a single arg, for example `-abc` is equivalent to `-a -b -c`. Multi-word options such as "--template-engine" are camel-cased, becoming `program.templateEngine` etc.
+
+## Commands & Actions
+
+```js
+program
+  .command('setup [env]')
+  .description('run setup commands for all envs')
+  .option('-s, --setup_mode [mode]', 'Which setup mode to use')
+  .action(function(env, options) {
+    var mode = options.setup_mode || 'normal';
+    env = env || 'all';
+    console.log('setup for %s env(s) with %s mode', env, mode);
+  });
+```
+
+ Commands can also have aliases, so the following is equivalent:
+
+```js
+program
+  .command('generate|g')
+  .description('generate a new config')
+  .action(generate);
+
+// is equivalent to
+
+program
+  .command('generate')
+  .description('generate a new config')
+  .action(generate);
+
+program
+  .cmmand('g')
+  .description('generate a new config')
+  .action(generate);
+```
+
 
 ## Automated --help
 
