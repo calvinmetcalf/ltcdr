@@ -1,6 +1,6 @@
 {
   "name": "ltcdr",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "the complete solution for node.js command-line programs",
   "keywords": [
     "command",
