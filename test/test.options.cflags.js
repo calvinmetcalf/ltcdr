@@ -2,8 +2,9 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
@@ -15,8 +16,11 @@ program
 
 
 program.parse(['node', 'test', '--cflags', '-DDEBUG', '-o', '-xyz']);
-program.should.have.property('cflags', '-DDEBUG');
-program.should.have.property('other');
-program.should.have.property('xother');
-program.should.have.property('yother');
-program.should.have.property('zother');
+test('cflags', function(t) {
+  t.equals(program.cflags, '-DDEBUG');
+  t.ok(program.other);
+  t.ok(program.xother);
+  t.ok(program.yother);
+  t.ok(program.zother);
+  t.end();
+});
