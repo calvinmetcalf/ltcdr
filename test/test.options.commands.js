@@ -2,8 +2,9 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
@@ -44,73 +45,110 @@ program
     console.log('deploying "%s"', env);
   });
   
-program.parse(['node', 'test', '--config', 'conf']);
-program.config.should.equal("conf");
-program.commands[0].should.not.have.property.setup_mode;
-program.commands[1].should.not.have.property.exec_mode;
-envValue.should.equal("");
-cmdValue.should.equal("");
 
-program.parse(['node', 'test', '--config', 'conf1', 'setup', '--setup_mode', 'mode3', 'env1']);
-program.config.should.equal("conf1");
-program.commands[0].setup_mode.should.equal("mode3");
-program.commands[0].should.not.have.property.host;
-envValue.should.equal("env1");
+test('test 1', function (t) {
+  program.parse(['node', 'test', '--config', 'conf']);
+  t.equals(program.config, 'conf');
+  t.notOk(program.command[0] && 'setup_mode' in program.command[0]);
+  t.notOk(program.command[1] && 'exec_mode' in program.command[1]);
+  t.notOk(envValue);
+  t.notOk(cmdValue);
+  t.end();
+});
 
-program.parse(['node', 'test', '--config', 'conf2', 'setup', '--setup_mode', 'mode3', '-o', 'host1', 'env2']);
-program.config.should.equal("conf2");
-program.commands[0].setup_mode.should.equal("mode3");
-program.commands[0].host.should.equal("host1");
-envValue.should.equal("env2");
 
-program.parse(['node', 'test', '--config', 'conf3', 'setup', '-s', 'mode4', 'env3']);
-program.config.should.equal("conf3");
-program.commands[0].setup_mode.should.equal("mode4");
-envValue.should.equal("env3");
+test('test 2', function (t) {
+  program.parse(['node', 'test', '--config', 'conf1', 'setup', '--setup_mode', 'mode3', 'env1']);
+  t.equals(program.config, 'conf1');
+  t.equals(program.commands[0].setup_mode, 'mode3');
+  t.equals(program.commands[0].host, undefined);
+  t.equals(envValue, 'env1');
+  t.end();
+});
 
-program.parse(['node', 'test', '--config', 'conf4', 'exec', '--exec_mode', 'mode1', 'exec1']);
-program.config.should.equal("conf4");
-program.commands[1].exec_mode.should.equal("mode1");
-program.commands[1].should.not.have.property.target;
-cmdValue.should.equal("exec1");
 
-program.parse(['node', 'test', '--config', 'conf5', 'exec', '-e', 'mode2', 'exec2']);
-program.config.should.equal("conf5");
-program.commands[1].exec_mode.should.equal("mode2");
-cmdValue.should.equal("exec2");
+test('test 3', function (t) {
+  program.parse(['node', 'test', '--config', 'conf2', 'setup', '--setup_mode', 'mode3', '-o', 'host1', 'env2']);
+  t.equals(program.config, 'conf2');
+  t.equals(program.commands[0].setup_mode, 'mode3');
+  t.equals(program.commands[0].host, 'host1');
+  t.equals(envValue, 'env2');
+  t.end();
+});
 
-program.parse(['node', 'test', '--config', 'conf6', 'exec', '--target', 'target1', '-e', 'mode2', 'exec3']);
-program.config.should.equal("conf6");
-program.commands[1].exec_mode.should.equal("mode2");
-program.commands[1].target.should.equal("target1");
-cmdValue.should.equal("exec3");
 
-// test alias
-program.parse(['node', 'test', '--config', 'conf7', 'run', '--target', 'target7', '-e', 'mode7', 'exec7']);
-program.config.should.equal("conf7");
-program.commands[1].exec_mode.should.equal("mode7");
-program.commands[1].target.should.equal("target7");
-cmdValue.should.equal("exec7");
+test('test 4', function (t) {
+  program.parse(['node', 'test', '--config', 'conf3', 'setup', '-s', 'mode4', 'env3']);
+  t.equals(program.config, 'conf3');
+  t.equals(program.commands[0].setup_mode, 'mode4');
+  t.equals(envValue, 'env3');
+  t.end();
+});
+
+
+test('test 5', function (t) {
+  program.parse(['node', 'test', '--config', 'conf4', 'exec', '--exec_mode', 'mode1', 'exec1']);
+  t.equals(program.config, 'conf4');
+  t.equals(program.commands[1].exec_mode, 'mode1');
+  t.notOk('target' in program.commands[1]);
+  t.equals(cmdValue, 'exec1');
+  t.end();
+});
+
+
+test('test 6', function (t) {
+  program.parse(['node', 'test', '--config', 'conf5', 'exec', '-e', 'mode2', 'exec2']);
+  t.equals(program.config, 'conf5');
+  t.equals(program.commands[1].exec_mode, 'mode2');
+  t.equals(cmdValue, 'exec2');
+  t.end();
+});
+
+
+test('test 7', function (t) {
+  program.parse(['node', 'test', '--config', 'conf6', 'exec', '--target', 'target1', '-e', 'mode2', 'exec3']);
+  t.equals(program.config, 'conf6');
+  t.equals(program.commands[1].exec_mode, 'mode2');
+  t.equals(program.commands[1].target, 'target1');
+  t.equals(cmdValue, 'exec3');
+  t.end();
+});
+
+test('aliases', function (t) {
+  program.parse(['node', 'test', '--config', 'conf7', 'run', '--target', 'target7', '-e', 'mode7', 'exec7']);
+  t.equals(program.config, "conf7");
+  t.equals(program.commands[1].exec_mode, "mode7");
+  t.equals(program.commands[1].target, "target7");
+  t.equals(cmdValue, "exec7");
+  t.end();
+});
 
 // Make sure we still catch errors with required values for options
-var exceptionOccurred = false;
-var oldProcessExit = process.exit;
-var oldConsoleError = console.error;
-process.exit = function() { exceptionOccurred = true; throw new Error(); };
-console.error = function() {};
+test('errors', function (t) {
 
-try {
-  program.parse(['node', 'test', '--config', 'conf6', 'exec', '--help']);
-} catch(ex) {
-  program.config.should.equal("conf6");
-}
+  var exceptionOccurred = false;
+  var oldProcessExit = process.exit;
+  var oldConsoleError = console.error;
+  process.exit = function() { exceptionOccurred = true; throw new Error(); };
+  console.error = function() {};
+  t.test('should work even if it throws', function (t) {
+    try {
+      program.parse(['node', 'test', '--config', 'conf6', 'exec', '--help']);
+    } catch(ex) {
+      t.equals(program.config, 'conf6');
+      t.end();
+    }
+  });
+  t.test('should exid right', function (t) {
+    try {
+        program.parse(['node', 'test', '--config', 'conf', 'exec', '-t', 'target1', 'exec1', '-e']);
+    }
+    catch(ex) {
+    }
 
-try {
-    program.parse(['node', 'test', '--config', 'conf', 'exec', '-t', 'target1', 'exec1', '-e']);
-}
-catch(ex) {
-}
-
-process.exit = oldProcessExit;
-exceptionOccurred.should.be.true;
-customHelp.should.be.true;
+    process.exit = oldProcessExit;
+    t.ok(exceptionOccurred);
+    t.ok(customHelp);
+    t.end();
+  });
+});

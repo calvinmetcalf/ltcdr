@@ -2,12 +2,16 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
   .option('--verbose', 'do stuff');
 
 program.parse(['node', 'test', '--verbose']);
-program.verbose.should.be.true;
+test('options large only', function (t) {
+  t.equals(program.verbose, true);
+  t.end();
+});

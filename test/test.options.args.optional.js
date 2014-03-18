@@ -2,12 +2,16 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
   .option('-c, --cheese [type]', 'optionally specify the type of cheese');
 
 program.parse(['node', 'test', '--cheese']);
-program.cheese.should.be.true;
+test('options camelcase', function (t) {
+  t.ok(program.cheese);
+  t.end();
+});

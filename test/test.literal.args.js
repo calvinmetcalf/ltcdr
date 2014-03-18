@@ -2,8 +2,8 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
@@ -11,6 +11,9 @@ program
   .option('-b, --bar', 'add some bar');
 
 program.parse(['node', 'test', '--foo', '--', '--bar', 'baz']);
-program.foo.should.be.true;
-should.equal(undefined, program.bar);
-program.args.should.eql(['--bar', 'baz']);
+test('literal args', function (t) {
+  t.ok(program.foo);
+  t.equal(program.bar, undefined);
+  t.deepEqual(program.args, ['--bar', 'baz']);
+  t.end();
+});

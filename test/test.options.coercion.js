@@ -2,8 +2,9 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 function parseRange(str) {
   return str.split('..').map(Number);
@@ -17,7 +18,10 @@ program
   .option('-r, --range <a..b>', 'pass a range', parseRange);
 
 program.parse('node test -i 5.5 -f 5.5 -n 15.99 -r 1..5'.split(' '));
-program.int.should.equal(5);
-program.num.should.equal(15.99);
-program.float.should.equal(5.5);
-program.range.should.eql([1,5]);
+test('option coercion', function(t) {
+  t.equals(program.int, 5);
+  t.equals(program.num, 15.99);
+  t.equals(program.float, 5.5);
+  t.deepEquals(program.range, [1,5]);
+  t.end();
+});

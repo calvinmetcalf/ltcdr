@@ -2,12 +2,16 @@
  * Module dependencies.
  */
 
-var program = require('../')
-  , should = require('should');
+var program = require('../');
+var program = new (require('../').Command)();
+var test = require('tape');
 
 program
   .version('0.0.1')
   .option('--longflag [value]', 'A long only flag with a value');
 
 program.parse(['node', 'test', '--longflag', 'something']);
-program.longflag.should.equal('something');
+test('option large only with value', function (t) {
+  t.equals(program.longflag, 'something');
+  t.end();
+});
