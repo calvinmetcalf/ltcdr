@@ -1,16 +1,14 @@
-# Commander.js
+# Lieutenant Commander
 
-  The complete solution for [node.js](http://nodejs.org) command-line interfaces, inspired by Ruby's [commander](https://github.com/visionmedia/commander).
-
- [![Build Status](https://secure.travis-ci.org/visionmedia/commander.js.png)](http://travis-ci.org/visionmedia/commander.js)
+  The complete solution for [node.js](http://nodejs.org) command-line interfaces, a for commander [commander](https://github.com/visionmedia/commander-js).
 
 ## Installation
 
-    $ npm install commander
+    $ npm install ltcdr
 
 ## Option parsing
 
- Options with commander are defined with the `.option()` method, also serving as documentation for the options. The example below parses args and options from `process.argv`, leaving remaining args as the `program.args` array which were not consumed by options.
+ Options with lieutenant commander are defined with the `.option()` method, also serving as documentation for the options. The example below parses args and options from `process.argv`, leaving remaining args as the `program.args` array which were not consumed by options.
 
 ```js
 #!/usr/bin/env node
@@ -19,7 +17,7 @@
  * Module dependencies.
  */
 
-var program = require('commander');
+var program = require('ltcdr');
 
 program
   .version('0.0.1')
@@ -40,7 +38,7 @@ console.log('  - %s cheese', program.cheese);
 
 ## Automated --help
 
- The help information is auto-generated based on the information commander already knows about your program, so the following `--help` info is for free:
+ The help information is auto-generated based on the information lieutenant commander already knows about your program, so the following `--help` info is for free:
 
 ```  
  $ ./examples/pizza --help

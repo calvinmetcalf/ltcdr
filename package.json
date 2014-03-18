@@ -1,5 +1,5 @@
 {
-    "name": "commander"
+    "name": "ltcdr"
   , "version": "2.1.0"
   , "description": "the complete solution for node.js command-line programs"
   , "keywords": ["command", "option", "parser", "prompt", "stdin"]
