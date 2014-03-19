@@ -227,7 +227,8 @@ Examples:
  - [ascii tables](https://github.com/LearnBoost/cli-table)
  - [progress bars](https://github.com/visionmedia/node-progress)
  - [more progress bars](https://github.com/substack/node-multimeter)
- - [examples](https://github.com/visionmedia/commander.js/tree/master/examples)
+ - [examples](https://github.com/calvinmetcalf/ltcdr/tree/master/examples)
+ - [prompts](https://github.com/SBoudrias/Inquirer.js)
 
 [1]: https://travis-ci.org/calvinmetcalf/ltcdr.png?branch=master
 [2]: https://travis-ci.org/calvinmetcalf/ltcdr
