@@ -1,6 +1,6 @@
 {
   "name": "ltcdr",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "the complete solution for node.js command-line programs",
   "keywords": [
     "command",
@@ -19,8 +19,13 @@
     "url": "https://github.com/calvinmetcalf/ltcdr.git"
   },
   "devDependencies": {
-    "tape": "^2.10.2"
+    "tape": "^2.10.2",
+    "tap-spec": "^0.1.5"
   },
+  "scripts": {
+    "test": "tape test/test.*.js | tspec"
+  },
+  "main": "index",
   "engines": {
     "node": ">= 0.6.x"
   }

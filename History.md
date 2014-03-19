@@ -1,3 +1,12 @@
+2.2.1 / 2014-3-18
+==================
+
+ * fix: excluded all the file by accedent
+
+2.2.0 / 2014-3-18
+==================
+
+ * add: alias/aliases option for commands
 
 2.1.0 / 2013-11-21
 ==================
