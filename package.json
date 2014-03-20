@@ -16,10 +16,13 @@
   },
   "devDependencies": {
     "tape": "^2.10.2",
-    "tap-spec": "^0.1.5"
+    "tap-spec": "^0.1.5",
+    "jshint": "^2.4.4"
   },
   "scripts": {
-    "test": "tape test/test.*.js | tspec"
+    "tape": "tape test/test.*.js | tspec",
+    "jshint": "jshint index.js lib/*.js",
+    "test": "npm run jshint && npm run tape"
   },
   "main": "index",
   "engines": {
