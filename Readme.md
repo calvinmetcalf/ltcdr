@@ -221,6 +221,11 @@ Examples:
 
   Output help information and exit immediately.
 
+## .parse()
+  
+  Starts processing the arguments, without any input it processes `process.argv`, otherwise 
+  you can pass in an array of arguments.
+
 ## Links
 
  - [API documentation](http://visionmedia.github.com/commander.js/)
