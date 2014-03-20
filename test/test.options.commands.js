@@ -173,7 +173,7 @@ test('errors', function (t) {
       t.end();
     }
   });
-  t.test('should exid right', function (t) {
+  t.test('should exit right', function (t) {
     try {
         program.parse(['node', 'test', '--config', 'conf', 'exec', '-t', 'target1', 'exec1', '-e']);
     }

@@ -6,7 +6,7 @@
 ## Installation
 
 ```
-$ npm install ltcdr
+$ npm install ltcdr --save
 ```
 
 
@@ -33,7 +33,33 @@ program
 // deployer i prod
 ```
 
-Aliases are optional, and can take a string or an array, e.g. `.aliases('s')` or `.aliases(['s', 'sup'])`.
+Commands can also have aliases, so the following is equivalent:
+
+```js
+program
+  .command('generate')
+  .aliases(['gen', 'g'])
+  .description('generate a new config')
+  .action(generate);
+
+// is equivalent to
+
+program
+  .command('generate')
+  .description('generate a new config')
+  .action(generate);
+
+program
+  .command('gen')
+  .description('generate a new config')
+  .action(generate);
+
+program
+  .command('g')
+  .description('generate a new config')
+  .action(generate);
+```
+Aliases are optional, and can take a string or an array, e.g. `alias('s')` or `aliases(['s', 'sup'])`.
 
 
 ## Option parsing
@@ -62,40 +88,6 @@ console.log('  - %s cheese', program.cheese);
 
  Short flags may be passed as a single arg, for example `-abc` is equivalent to `-a -b -c`. Multi-word options such as "--template-engine" are camel-cased, becoming `program.templateEngine` etc.
 
-## Commands & Actions
-
-```js
-program
-  .command('setup [env]')
-  .description('run setup commands for all envs')
-  .option('-s, --setup_mode [mode]', 'Which setup mode to use')
-  .action(function(env, options) {
-    var mode = options.setup_mode || 'normal';
-    env = env || 'all';
-    console.log('setup for %s env(s) with %s mode', env, mode);
-  });
-```
-
- Commands can also have aliases, so the following is equivalent:
-
-```js
-program
-  .command('generate|g')
-  .description('generate a new config')
-  .action(generate);
-
-// is equivalent to
-
-program
-  .command('generate')
-  .description('generate a new config')
-  .action(generate);
-
-program
-  .cmmand('g')
-  .description('generate a new config')
-  .action(generate);
-```
 
 
 ## Automated --help
