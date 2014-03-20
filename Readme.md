@@ -43,10 +43,6 @@ Aliases are optional, and can take a string or an array, e.g. `.aliases('s')` or
 ```js
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-
 var program = require('ltcdr');
 
 program
@@ -65,6 +61,42 @@ console.log('  - %s cheese', program.cheese);
 ```
 
  Short flags may be passed as a single arg, for example `-abc` is equivalent to `-a -b -c`. Multi-word options such as "--template-engine" are camel-cased, becoming `program.templateEngine` etc.
+
+## Commands & Actions
+
+```js
+program
+  .command('setup [env]')
+  .description('run setup commands for all envs')
+  .option('-s, --setup_mode [mode]', 'Which setup mode to use')
+  .action(function(env, options) {
+    var mode = options.setup_mode || 'normal';
+    env = env || 'all';
+    console.log('setup for %s env(s) with %s mode', env, mode);
+  });
+```
+
+ Commands can also have aliases, so the following is equivalent:
+
+```js
+program
+  .command('generate|g')
+  .description('generate a new config')
+  .action(generate);
+
+// is equivalent to
+
+program
+  .command('generate')
+  .description('generate a new config')
+  .action(generate);
+
+program
+  .cmmand('g')
+  .description('generate a new config')
+  .action(generate);
+```
+
 
 ## Automated --help
 
@@ -195,7 +227,8 @@ Examples:
  - [ascii tables](https://github.com/LearnBoost/cli-table)
  - [progress bars](https://github.com/visionmedia/node-progress)
  - [more progress bars](https://github.com/substack/node-multimeter)
- - [examples](https://github.com/visionmedia/commander.js/tree/master/examples)
+ - [examples](https://github.com/calvinmetcalf/ltcdr/tree/master/examples)
+ - [prompts](https://github.com/SBoudrias/Inquirer.js)
 
 [1]: https://travis-ci.org/calvinmetcalf/ltcdr.png?branch=master
 [2]: https://travis-ci.org/calvinmetcalf/ltcdr
