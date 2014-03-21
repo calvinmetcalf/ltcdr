@@ -157,14 +157,26 @@ test('running an alias', function (t) {
   t.end();
 });
 
+test('args with command value', function (t) {
+  program.parse(['node', 'test', 'exec', 'config9', '-t', 'alpha', 'hello']);
+  
+  var command = program.commands[1];
+
+  t.equals(command._name, 'exec');
+  t.equals(command.target, 'alpha');
+  t.equals(command.args, 'hello');
+  t.end();
+});
+
 // Make sure we still catch errors with required values for options
 test('errors', function (t) {
-
   var exceptionOccurred = false;
   var oldProcessExit = process.exit;
   var oldConsoleError = console.error;
+
   process.exit = function() { exceptionOccurred = true; throw new Error(); };
   console.error = function() {};
+
   t.test('should work even if it throws', function (t) {
     try {
       program.parse(['node', 'test', '--config', 'conf6', 'exec', '--help']);
@@ -173,9 +185,10 @@ test('errors', function (t) {
       t.end();
     }
   });
+
   t.test('should exid right', function (t) {
     try {
-        program.parse(['node', 'test', '--config', 'conf', 'exec', '-t', 'target1', 'exec1', '-e']);
+      program.parse(['node', 'test', '--config', 'conf', 'exec', '-t', 'target1', 'exec1', '-e']);
     }
     catch(ex) {
     }
