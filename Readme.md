@@ -227,5 +227,5 @@ Examples:
  - [examples](https://github.com/calvinmetcalf/ltcdr/tree/master/examples)
  - [prompts](https://github.com/SBoudrias/Inquirer.js)
 
-[1]: https://travis-ci.org/calvinmetcalf/ltcdr.png?branch=master
+[1]: https://travis-ci.org/calvinmetcalf/ltcdr.svg?branch=master
 [2]: https://travis-ci.org/calvinmetcalf/ltcdr
